@@ -1,66 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Laravel Web Push Example
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A basic example of using webpush notifications with laravel and Javascript. Push Notifications are a part of Service Workers and It requires HTTPS unless you are using localhost.
 
-## About Laravel
+#### Running this web application
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-make sure you have xampp or wamp installed if you are on windows machine, mamp for mac , and lamp for linux.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-clone this repository to your local machine or just download the zip.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-install Composer first, then run this command in your command-line (you should be inside your project directory).
 
-## Learning Laravel
+  `composer install`
+-rename .env.example to .env and configure your database.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-generate application key.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    `php artisan key:generate`
+-create tables by migrations.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    `php artisan migrate`
+    
+-Generate VAPID Keys (this command will place the VAPID keys in your .env file).
 
-## Laravel Sponsors
+    `php artisan webpush:vapid`
+    
+-Add the VAPID public key to application server key in enable-push.js file located in public/js directory, here's the link to that line
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+To make build
 
-### Premium Partners
+ `npm install`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+  `npm run build`
 
-## Contributing
+-Start Laravel dev server.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    `php artisan serve`
 
-## Code of Conduct
+Read the entire tutorial Push Notifications with Laravel and Webpush on Medium.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Webpush package is used by this app.
+---------------------------------------------------------------------------------------
+### Laravel (PWA) Progressive Web Aplication
 
-## Security Vulnerabilities
+This Laravel pakage turns your project into a progressive web app. 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Launching the app from your home screen will display your app. As such, it's critical that your application provides all navigation within the HTML (no reliance on the browser back or forward button).
 
-## License
+### Requirements
+Progressive Web Apps require HTTPS unless being served from localhost. 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Installation
+Add the following to your composer.json file :
+
+"require": {
+    "silviolleite/laravelpwa": "~2.0.3",
+},
+
+or execute
+
+composer require silviolleite/laravelpwa --prefer-dist
+
+Publish
+
+php artisan vendor:publish --provider="LaravelPWA\Providers\LaravelPWAServiceProvid"
+### Installation
+
+Configure your app name, description, icons and splashes in config/laravelpwa.php.
+
+Include within your <head> the blade directive @laravelPWA.
+
+    '<html>
+    <head>
+        <title>My Title</title>
+        ...
+        @laravelPWA
+    </head>
+    <body>
+        ...
+        My content
+        ...
+    </body>
+    </html>'
+This should include the appropriate meta tags, the link to manifest.json and the serviceworker script.
+
+### Troubleshooting
+
+While running the Laravel test server:
+
+Verify that /manifest.json is being served
+Verify that /serviceworker.js is being served
+Use the Application tab in the Chrome Developer Tools to verify the progressive web app is configured correctly.
+Use the "Add to homescreen" link on the Application Tab to verify you can add the app successfully.
+
