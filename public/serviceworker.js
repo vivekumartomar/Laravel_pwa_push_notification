@@ -1,6 +1,8 @@
 var staticCacheName = "pwa-v" + new Date().getTime();
 var filesToCache = [
-    '/',
+    '/login',
+    '/styles/login.css',
+    '/scripts/login.js',
 ];
 
 self.addEventListener('push', function (e) {
